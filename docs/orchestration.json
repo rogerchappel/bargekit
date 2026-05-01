@@ -1,0 +1,237 @@
+{
+  "version": "0.1",
+  "source": "assistant-authored from PRD.md by Neo; designed as LLM-quality orchestration with explicit concurrency waves",
+  "workspace": "default",
+  "repository": "bargekit",
+  "generated_by": "Neo",
+  "generated_at": "2026-05-01T06:59:13.595789+00:00",
+  "product_north_star": "Build a local-first turn-taking SDK that makes voice agents interruptible, microphone-aware, echo-conscious, and honest about listening state.",
+  "dispatch_now": [
+    "bargekit-define-turn-taking-state-machine"
+  ],
+  "blocked_tasks": [
+    "bargekit-real-world-quality-pass"
+  ],
+  "refinement_notes": [
+    "Turn-taking is a state machine product. Nail timing semantics before chasing advanced VAD models.",
+    "The fastest path is synthetic audio fixtures first, then browser demo, then real-world tuning profiles.",
+    "It must pair cleanly with VoicePath and AgentPulse: interruption and input state should be first-class events.",
+    "Privacy posture must be explicit: local processing by default, microphone opt-in only, no covert recording."
+  ],
+  "waves": [
+    {
+      "index": 1,
+      "name": "Turn-taking contract",
+      "mode": "sequential",
+      "dispatch": "now",
+      "tasks": [
+        "bargekit-define-turn-taking-state-machine"
+      ]
+    },
+    {
+      "index": 2,
+      "name": "Core engine and synthetic proof",
+      "mode": "concurrent",
+      "dispatch": "after_dependencies",
+      "tasks": [
+        "bargekit-build-core-state-engine",
+        "bargekit-synthetic-audio-fixtures"
+      ]
+    },
+    {
+      "index": 3,
+      "name": "Device and ecosystem integration",
+      "mode": "concurrent",
+      "dispatch": "after_dependencies",
+      "tasks": [
+        "bargekit-web-microphone-adapter",
+        "bargekit-output-ducking-hooks",
+        "bargekit-agentpulse-events"
+      ]
+    },
+    {
+      "index": 4,
+      "name": "Demo and documentation",
+      "mode": "concurrent",
+      "dispatch": "after_dependencies",
+      "tasks": [
+        "bargekit-demo-and-tuning-ui",
+        "bargekit-docs-privacy-platform-guide"
+      ]
+    },
+    {
+      "index": 5,
+      "name": "Real-world quality pass",
+      "mode": "sequential",
+      "dispatch": "after_human_decision",
+      "tasks": [
+        "bargekit-real-world-quality-pass"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "bargekit-define-turn-taking-state-machine",
+      "title": "Define turn-taking state machine and audio policy contract",
+      "repo": "bargekit",
+      "branch": "agent/define-turn-taking-state-machine",
+      "phase": "foundation",
+      "risk": "medium",
+      "depends_on": [],
+      "can_run_concurrently_with": [],
+      "dispatchable": true,
+      "blocked_by": [],
+      "objective": "Specify modes, states, events, thresholds, timing windows, barge-in policy, echo/duplex hooks, and integration contracts with VoicePath/AgentPulse.",
+      "acceptance_criteria": "Architecture doc and types define push-to-talk, VAD, wake-hook, half-duplex, muted, speech, silence, and interruption semantics."
+    },
+    {
+      "id": "bargekit-build-core-state-engine",
+      "title": "Build core turn-taking state engine",
+      "repo": "bargekit",
+      "branch": "agent/build-core-state-engine",
+      "phase": "implementation",
+      "risk": "medium",
+      "depends_on": [
+        "bargekit-define-turn-taking-state-machine"
+      ],
+      "can_run_concurrently_with": [
+        "bargekit-synthetic-audio-fixtures"
+      ],
+      "dispatchable": false,
+      "blocked_by": [],
+      "objective": "Implement @bargekit/core with deterministic level ingestion, debounce, min speech, silence detection, interruption policy, and event emitter.",
+      "acceptance_criteria": "Synthetic tests cover speech start/end, noise gate, debounce, silence windows, barge-in while speaking, muted input, and half-duplex."
+    },
+    {
+      "id": "bargekit-synthetic-audio-fixtures",
+      "title": "Create synthetic audio fixtures and tuning harness",
+      "repo": "bargekit",
+      "branch": "agent/synthetic-audio-fixtures",
+      "phase": "verification",
+      "risk": "low",
+      "depends_on": [
+        "bargekit-define-turn-taking-state-machine"
+      ],
+      "can_run_concurrently_with": [
+        "bargekit-build-core-state-engine"
+      ],
+      "dispatchable": false,
+      "blocked_by": [],
+      "objective": "Build deterministic fixtures for quiet room, keyboard noise, short utterance, long utterance, speaker echo, and interruption timing.",
+      "acceptance_criteria": "Fixtures are reusable in tests and demos; tuning output explains threshold decisions."
+    },
+    {
+      "id": "bargekit-web-microphone-adapter",
+      "title": "Build browser microphone/analyser adapter",
+      "repo": "bargekit",
+      "branch": "agent/web-microphone-adapter",
+      "phase": "implementation",
+      "risk": "medium",
+      "depends_on": [
+        "bargekit-build-core-state-engine"
+      ],
+      "can_run_concurrently_with": [
+        "bargekit-output-ducking-hooks",
+        "bargekit-agentpulse-events"
+      ],
+      "dispatchable": false,
+      "blocked_by": [],
+      "objective": "Implement @bargekit/web with explicit permission flow, analyser sampling, cleanup, device errors, and no hidden recording.",
+      "acceptance_criteria": "Browser smoke tests/mocks verify permission denied, device unavailable, start/stop cleanup, and level streaming."
+    },
+    {
+      "id": "bargekit-output-ducking-hooks",
+      "title": "Implement output ducking and VoicePath interruption hooks",
+      "repo": "bargekit",
+      "branch": "agent/output-ducking-hooks",
+      "phase": "integration",
+      "risk": "medium",
+      "depends_on": [
+        "bargekit-build-core-state-engine"
+      ],
+      "can_run_concurrently_with": [
+        "bargekit-web-microphone-adapter",
+        "bargekit-agentpulse-events"
+      ],
+      "dispatchable": false,
+      "blocked_by": [],
+      "objective": "Expose events and helpers so VoicePath can interrupt, duck, resume, or hold output when user speech begins.",
+      "acceptance_criteria": "Integration tests prove barge-in-requested fires within timing budget and stale output is not resumed incorrectly."
+    },
+    {
+      "id": "bargekit-agentpulse-events",
+      "title": "Map turn-taking events to AgentPulse contract",
+      "repo": "bargekit",
+      "branch": "agent/agentpulse-events",
+      "phase": "integration",
+      "risk": "low",
+      "depends_on": [
+        "bargekit-build-core-state-engine"
+      ],
+      "can_run_concurrently_with": [
+        "bargekit-web-microphone-adapter",
+        "bargekit-output-ducking-hooks"
+      ],
+      "dispatchable": false,
+      "blocked_by": [],
+      "objective": "Publish event mapping for user speech started/ended, input muted, noise gated, barge-in requested, and half-duplex hold.",
+      "acceptance_criteria": "Fixture-backed examples drive AgentPulse reducer and AgentGlow listening/speaking visuals."
+    },
+    {
+      "id": "bargekit-demo-and-tuning-ui",
+      "title": "Build live demo and tuning UI",
+      "repo": "bargekit",
+      "branch": "agent/demo-and-tuning-ui",
+      "phase": "demo",
+      "risk": "medium",
+      "depends_on": [
+        "bargekit-web-microphone-adapter",
+        "bargekit-output-ducking-hooks",
+        "bargekit-agentpulse-events"
+      ],
+      "can_run_concurrently_with": [
+        "bargekit-docs-privacy-platform-guide"
+      ],
+      "dispatchable": false,
+      "blocked_by": [],
+      "objective": "Create a browser demo showing mic level, detected segments, thresholds, interruption timing, and before/after barge-in behaviour.",
+      "acceptance_criteria": "Demo is opt-in mic only, includes synthetic playback mode, profile presets, and an obvious \u201cinterrupt the agent\u201d scenario."
+    },
+    {
+      "id": "bargekit-docs-privacy-platform-guide",
+      "title": "Write privacy, platform, and integration docs",
+      "repo": "bargekit",
+      "branch": "agent/docs-privacy-platform-guide",
+      "phase": "documentation",
+      "risk": "low",
+      "depends_on": [
+        "bargekit-demo-and-tuning-ui"
+      ],
+      "can_run_concurrently_with": [
+        "bargekit-demo-and-tuning-ui"
+      ],
+      "dispatchable": false,
+      "blocked_by": [],
+      "objective": "Document local processing, platform limits, echo caveats, tuning recipes, VoicePath integration, AgentPulse events, and safe default configs.",
+      "acceptance_criteria": "README is clear about what V1 does and does not guarantee; no enterprise echo-cancellation overclaiming."
+    },
+    {
+      "id": "bargekit-real-world-quality-pass",
+      "title": "Run real-world quality pass and release checklist",
+      "repo": "bargekit",
+      "branch": "agent/real-world-quality-pass",
+      "phase": "final_validation",
+      "risk": "high",
+      "depends_on": [
+        "bargekit-docs-privacy-platform-guide"
+      ],
+      "can_run_concurrently_with": [],
+      "dispatchable": false,
+      "blocked_by": [
+        "approve high-risk scope before dispatch"
+      ],
+      "objective": "Test on at least laptop speaker/mic and headset-style paths if available, then produce a release readiness checklist and known limitations.",
+      "acceptance_criteria": "Human/product review confirms interaction feels natural enough to pair with VoicePath demos."
+    }
+  ]
+}
