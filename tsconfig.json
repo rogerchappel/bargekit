@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "strict": false,
+    "lib": ["ES2022", "DOM"],
+    "skipLibCheck": true,
+    "types": []
+  },
+  "include": ["src/**/*.js", "demo/**/*.js"]
+}

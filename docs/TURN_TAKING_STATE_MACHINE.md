@@ -1,20 +1,20 @@
 # BargeKit Turn-Taking State Machine
 
-Status: Wave 1 canonical contract
-Spec version: `1.0.0`
+Status: canonical contract after Wave 3 foundations
+Spec version: `1.1.0`
 
 ## Product North Star
 
-BargeKit is the local-first turn-taking layer for voice agents. It decides when microphone input is accepted, ignored, noise-gated, or treated as an interruption so agent apps can feel naturally interruptible without adopting a full voice-agent framework.
+BargeKit is the local-first turn-taking layer for voice agents. It decides when microphone input is accepted, ignored, noise-gated, duplex-held, or treated as an interruption so agent apps can feel naturally interruptible without adopting a full voice stack.
 
 ## Design Goals
 
 - **Local-first:** core state machine and default audio-level policy run locally.
 - **Deterministic:** the same input signal sequence must produce the same state/events.
 - **Interruptible:** barge-in is a first-class transition, not an afterthought.
-- **Echo-aware:** agent output can gate or duck microphone handling.
-- **Mode-aware:** push-to-talk, VAD, wake-hook, and half-duplex behavior use the same states with different guards.
-- **Observable:** every state transition emits an event suitable for UI, VoicePath, and AgentPulse integrations.
+- **Echo-aware:** agent output can gate, duck, or cancel microphone handling.
+- **Mode-aware:** push-to-talk, VAD, wake-hook, and half-duplex behavior use the same state vocabulary with different guards.
+- **Observable:** every important transition emits events suitable for UI, VoicePath, and AgentPulse integrations.
 
 ## Modes
 
@@ -23,7 +23,7 @@ BargeKit is the local-first turn-taking layer for voice agents. It decides when 
 | `push_to_talk` | Input is accepted only while an explicit push control is active. |
 | `vad` | Voice activity detection opens/closes speech segments. |
 | `wake_hook` | External wake detector arms BargeKit before VAD/segment handling. |
-| `half_duplex` | Microphone input is muted while agent output is active unless interruption is explicitly enabled. |
+| `half_duplex` | Microphone input is held while agent output is active unless the host changes policy. |
 
 ## States
 
@@ -47,46 +47,45 @@ BargeKit is the local-first turn-taking layer for voice agents. It decides when 
 |---|---|---|
 | `session.start` | `mode` | Turn-taking session begins. |
 | `session.stop` | `reason` | Turn-taking session ends. |
-| `mic.level` | `level`, `timeMs` | Audio level sample or aggregate. |
-| `vad.speech.start` | `confidence`, `timeMs` | VAD says speech began. |
-| `vad.speech.end` | `confidence`, `timeMs` | VAD says speech ended. |
-| `push.down` | `timeMs` | Push-to-talk pressed. |
-| `push.up` | `timeMs` | Push-to-talk released. |
-| `wake.detected` | `confidence`, `timeMs` | External wake hook fired. |
-| `agent.output.start` | `outputId` | Agent audio playback began. |
-| `agent.output.end` | `outputId` | Agent audio playback ended. |
-| `agent.output.ducked` | `outputId` | Output was ducked by host/VoicePath. |
+| `mic.level` | `level`, `timestamp` | Audio level sample or aggregate. |
+| `vad.speech.start` | `timestamp` | Derived internal speech-start decision. |
+| `vad.speech.end` | `timestamp` | Derived internal speech-end decision. |
+| `push.down` | `timestamp` | Push-to-talk pressed. |
+| `push.up` | `timestamp` | Push-to-talk released. |
+| `wake.detected` | `timestamp` | External wake hook fired. |
+| `agent.output.start` | `token` | Agent audio playback began. |
+| `agent.output.end` | `token` | Agent audio playback ended. |
+| `agent.output.ducked` | `token` | Output was ducked by host/VoicePath. |
 | `mute.on` | `reason` | Host muted input. |
 | `mute.off` | `reason` | Host unmuted input. |
 | `config.update` | `patch` | Runtime policy changed. |
-| `error.raise` | `code`, `summary` | Host or adapter reported a failure. |
+| `error.raise` | `message` | Host or adapter reported a failure. |
 
 ## Configuration Contract
 
 ```json
 {
   "mode": "vad",
-  "speechThreshold": 0.62,
-  "noiseFloor": 0.12,
+  "speechThreshold": 0.58,
+  "noiseFloorThreshold": 0.18,
   "minSpeechMs": 120,
   "silenceMs": 450,
   "debounceMs": 80,
-  "cooldownMs": 250,
+  "cooldownMs": 160,
+  "wakeWindowMs": 4000,
+  "halfDuplex": {
+    "preventWhileAgentSpeaking": true
+  },
   "bargeIn": {
     "enabled": true,
     "whileAgentSpeaking": true,
-    "minSpeechMs": 140,
+    "cancelOutput": true,
     "duckOutput": true
-  },
-  "echoGuard": {
-    "enabled": true,
-    "suppressWhileOutput": false,
-    "duckOnBarge": true
   }
 }
 ```
 
-Required fields: `mode`, `minSpeechMs`, `silenceMs`, `debounceMs`, `bargeIn.enabled`.
+Required fields: `mode`, `speechThreshold`, `noiseFloorThreshold`, `minSpeechMs`, `silenceMs`, `debounceMs`, `cooldownMs`, `bargeIn.enabled`.
 
 ## Transition Rules
 
@@ -105,27 +104,40 @@ Required fields: `mode`, `minSpeechMs`, `silenceMs`, `debounceMs`, `bargeIn.enab
 
 ### VAD/open microphone
 
-- `armed` + qualifying `vad.speech.start` -> `user_speaking`
-- `armed` + level below threshold but above noise floor -> `noise_gated`
+- `armed` + qualifying speech -> `user_speaking`
+- `armed` + level below `speechThreshold` but above `noiseFloorThreshold` -> `noise_gated`
 - `noise_gated` + qualifying speech -> `user_speaking`
-- `noise_gated` + silence for `silenceMs` -> `armed`
 - `user_speaking` + silence for `silenceMs` -> `cooldown`
 - `cooldown` after `cooldownMs` -> `armed`
+
+### Wake-hook
+
+- `armed` ignores speech until `wake.detected`
+- `wake.detected` -> `listening`
+- `listening` + qualifying speech inside `wakeWindowMs` -> `user_speaking`
+- `wakeWindowMs` expiry without speech -> `armed`
 
 ### Agent output and barge-in
 
 - `armed` + `agent.output.start` -> `agent_speaking`
 - `agent_speaking` + qualifying user speech when barge-in enabled -> `barge_pending`
-- `barge_pending` after `bargeIn.minSpeechMs` -> `interrupted`
-- `interrupted` emits output interruption/duck request and then -> `user_speaking`
-- `agent_speaking` + `agent.output.end` -> `armed`
-- `agent_speaking` + user speech when barge-in disabled -> `noise_gated` or remain `agent_speaking` depending on `echoGuard.suppressWhileOutput`
+- `barge_pending` emits `bargekit.barge_in.requested`
+- if `duckOutput` -> emit `bargekit.output.duck_requested`
+- if `cancelOutput` -> emit `bargekit.output.cancel_requested`
+- `barge_pending` + sustained speech -> `interrupted`
+- `interrupted` may proceed to `user_speaking` once output ends or host policy releases the turn
+
+### Half-duplex hold
+
+- `half_duplex` + `agent.output.start` -> `agent_speaking`
+- `agent_speaking` + microphone activity above noise floor -> emit `bargekit.input.duplex_hold`
+- `agent.output.end` -> `armed`
 
 ### Muting
 
 - any non-error state + `mute.on` -> `muted`
-- `muted` + `mute.off` -> `armed`
-- `muted` ignores speech/VAD inputs but may record suppressed events.
+- `muted` + `mute.off` -> `armed` or `agent_speaking` depending on output state
+- `muted` ignores speech/VAD inputs but may emit suppressed-state observability
 
 ## Event Contract
 
@@ -136,20 +148,21 @@ Required fields: `mode`, `minSpeechMs`, `silenceMs`, `debounceMs`, `bargeIn.enab
 | `bargekit.state.changed` | Any state transition occurs. |
 | `bargekit.user_speech.started` | User speech segment starts. |
 | `bargekit.user_speech.ended` | User speech segment ends. |
-| `bargekit.barge_in.requested` | Barge-in threshold is satisfied. |
+| `bargekit.barge_in.requested` | Barge-in threshold is satisfied while agent audio is active. |
 | `bargekit.output.duck_requested` | Output should duck for interruption. |
 | `bargekit.output.cancel_requested` | Output should stop for interruption. |
 | `bargekit.input.muted` | Input is muted by host/policy. |
 | `bargekit.input.noise_gated` | Input is suppressed as noise/echo. |
+| `bargekit.input.duplex_hold` | Half-duplex policy is holding microphone activity during agent output. |
 | `bargekit.error.recorded` | State machine enters `error`. |
 
-Events include `sessionId`, `state`, `previousState`, `mode`, `timeMs`, and `reason` when applicable.
+Events include timestamps and state or policy metadata when applicable.
 
 ## Invariants
 
-- `user_speaking` and `agent_speaking` may overlap only through `barge_pending`/`interrupted`; otherwise the machine must choose a policy outcome.
+- `user_speaking` and `agent_speaking` may overlap only through `barge_pending` / `interrupted`; otherwise the machine must choose a policy outcome.
 - No barge-in may be emitted unless `bargeIn.enabled` is true.
-- No speech segment starts until `minSpeechMs` is satisfied.
+- No speech segment starts until both debounce and minimum speech windows are satisfied.
 - No speech segment ends until `silenceMs` is satisfied.
 - Muted input cannot produce `user_speech.started`.
 - Echo/noise suppression must emit an observable suppression event.
@@ -158,5 +171,5 @@ Events include `sessionId`, `state`, `previousState`, `mode`, `timeMs`, and `rea
 ## Integration Notes
 
 - VoicePath should subscribe to `bargekit.output.cancel_requested` or `bargekit.output.duck_requested` to interrupt playback.
-- AgentPulse should map speech and interruption events into its canonical event stream.
-- AgentGlow can render listening/speaking/interrupted states from `bargekit.state.changed`.
+- AgentPulse should map speech, mute, noise, duplex-hold, and interruption events into its canonical event stream.
+- AgentGlow can render listening/speaking/interrupted states from `bargekit.state.changed` or the reducer helper.
