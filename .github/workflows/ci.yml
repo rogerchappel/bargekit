@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repository-hygiene:
+    name: Repository hygiene
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Validate required project files
+        run: |
+          set -euo pipefail
+
+          required_files=(
+            README.md
+            LICENSE
+          )
+
+          for file in "${required_files[@]}"; do
+            test -s "$file"
+          done
+
+      - name: Validate markdown files are not empty
+        run: |
+          set -euo pipefail
+
+          markdown_count=0
+
+          while IFS= read -r -d '' file; do
+            markdown_count=$((markdown_count + 1))
+            test -s "$file"
+          done < <(find . -type f -name '*.md' -not -path './.git/*' -print0)
+
+          if [ "$markdown_count" -eq 0 ]; then
+            echo "No markdown files found."
+            exit 1
+          fi
+
+      - name: Run optional Node checks
+        run: |
+          set -euo pipefail
+
+          if [ ! -f package.json ]; then
+            echo "No package.json found; skipping Node checks."
+            echo "TODO: add install, lint, test, typecheck, or build commands when this template becomes an app or package."
+            exit 0
+          fi
+
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+          npm run lint --if-present
+          npm test --if-present
+          npm run typecheck --if-present
+          npm run build --if-present
