@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BargeKit Demo</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Local-first voice turn-taking</p>
+          <h1>BargeKit live demo + tuning harness</h1>
+          <p class="lede">Opt-in microphone only. No upload path. Synthetic fixtures let you test barge-in, noise gating, and half-duplex behavior without speaking.</p>
+        </div>
+        <div class="status-card">
+          <div><span>State</span><strong id="state-value">idle</strong></div>
+          <div><span>Mic level</span><strong id="level-value">0.00</strong></div>
+          <div><span>AgentPulse</span><strong id="pulse-value">0</strong></div>
+        </div>
+      </section>
+
+      <section class="controls">
+        <label>
+          Profile preset
+          <select id="preset-select"></select>
+        </label>
+        <label>
+          Mode
+          <select id="mode-select">
+            <option value="vad">Open mic + VAD</option>
+            <option value="push_to_talk">Push to talk</option>
+            <option value="wake_hook">Wake-hook</option>
+            <option value="half_duplex">Half duplex</option>
+          </select>
+        </label>
+        <label>
+          Speech threshold
+          <input id="speech-threshold" type="range" min="0.2" max="0.9" step="0.01" value="0.58">
+        </label>
+        <button id="start-mic">Start microphone</button>
+        <button id="stop-mic" disabled>Stop microphone</button>
+        <button id="push-button">Push-to-talk</button>
+        <button id="wake-button">Wake signal</button>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <h2>Synthetic fixtures</h2>
+          <div class="fixture-actions" id="fixture-actions"></div>
+          <pre id="fixture-report"></pre>
+        </article>
+
+        <article class="panel">
+          <h2>Output interruption</h2>
+          <p>Simulate agent speech, then speak or run the interruption fixture.</p>
+          <div class="inline-actions">
+            <button id="agent-start">Agent starts speaking</button>
+            <button id="agent-stop">Agent stops speaking</button>
+          </div>
+          <pre id="duck-log"></pre>
+        </article>
+
+        <article class="panel">
+          <h2>Event stream</h2>
+          <pre id="event-log"></pre>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

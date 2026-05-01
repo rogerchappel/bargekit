@@ -1,13 +1,24 @@
-# bargekit Documentation
+# bargekit docs
 
-This directory holds project documentation.
+## Core references
 
-## Contents
+- [PRD](./PRD.md)
+- [Orchestration handoff](./ORCHESTRATION.md)
+- [Task queue](./TASKS.md)
+- [Turn-taking state machine](./TURN_TAKING_STATE_MACHINE.md)
 
-- [Contributing guide](../CONTRIBUTING.md)
-- [Security policy](../SECURITY.md)
-- [Agent instructions](../AGENTS.md)
+## Build + demo references
 
-## Additional docs
+- [Privacy and platform guide](./PRIVACY_PLATFORM_GUIDE.md)
+- [Real-world quality pass](./REAL_WORLD_QUALITY_PASS.md)
+- [Overnight progress log](./OVERNIGHT_PROGRESS.md)
 
-For a hosted documentation site, see the `docs-site/` directory if present.
+## Demo
+
+Serve the repository root and open `/demo/`:
+
+```sh
+python3 -m http.server 4173
+```
+
+Then visit <http://localhost:4173/demo/>.
