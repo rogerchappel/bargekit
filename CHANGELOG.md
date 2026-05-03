@@ -9,7 +9,11 @@ format and uses semantic versioning when versioned releases are published.
 
 ### Added
 
-- Initial project setup.
+- Local-first turn-taking engine with VAD, push-to-talk, wake-hook, half-duplex, mute, and barge-in semantics.
+- Browser microphone adapter with explicit permission flow and cleanup.
+- Synthetic fixture catalog, checked-in JSON fixtures, tuning helpers, and fixture IO.
+- `bargekit` CLI for listing fixtures, tuning thresholds, smoke testing fixtures, and opening demo instructions.
+- AgentPulse/VoicePath-style integration helpers, event recorder, docs, examples, and safety posture.
 
 ## Release Links
 
