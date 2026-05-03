@@ -2,15 +2,25 @@ import { execFileSync } from 'node:child_process';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
-const roots = ['src', 'test', 'scripts', 'demo'];
+const roots = ['src', 'test', 'scripts', 'demo', 'examples'];
 
-for (const root of roots) {
+function* walk(root) {
   for (const entry of readdirSync(root, { withFileTypes: true })) {
-    if (!entry.isFile() || (!entry.name.endsWith('.js') && !entry.name.endsWith('.mjs'))) {
+    const path = join(root, entry.name);
+    if (entry.isDirectory()) {
+      yield* walk(path);
       continue;
     }
 
-    execFileSync(process.execPath, ['--check', join(root, entry.name)], { stdio: 'inherit' });
+    if (entry.isFile() && (entry.name.endsWith('.js') || entry.name.endsWith('.mjs'))) {
+      yield path;
+    }
+  }
+}
+
+for (const root of roots) {
+  for (const path of walk(root)) {
+    execFileSync(process.execPath, ['--check', path], { stdio: 'inherit' });
   }
 }
 
