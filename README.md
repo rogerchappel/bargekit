@@ -1,6 +1,6 @@
 # bargekit
 
-BargeKit is a local-first turn-taking SDK for voice agents.
+BargeKit is a local-first turn-taking SDK for voice agents — the tiny harbor pilot that keeps agent audio from smashing into the dock.
 
 It focuses on the messy parts that make voice products feel natural instead of brittle:
 
@@ -33,13 +33,13 @@ What it does **not** promise yet:
 ## Install
 
 ```sh
-npm install
+npm install @bargekit/core
 ```
 
 ## Quick start
 
 ```js
-import { createBargeKit, createOutputDuckingController } from 'bargekit';
+import { createBargeKit, createOutputDuckingController } from '@bargekit/core';
 
 const barge = createBargeKit({
   mode: 'vad',
@@ -85,6 +85,17 @@ Everything currently ships from one package with a few focused entry surfaces:
 - `src/web.js` — browser microphone/analyser adapter
 - `src/integrations.js` — VoicePath duck/cancel hooks + AgentPulse bridge
 - `demo/` — local static demo UI
+
+## CLI
+
+```sh
+bargekit fixtures --json
+bargekit tune --fixture tests/fixtures/long_utterance.json --json
+bargekit smoke --fixture tests/fixtures/interruption_timing.json --json
+bargekit demo
+```
+
+The CLI uses synthetic/local fixture data only; it does not open a microphone.
 
 ## Demo
 
@@ -154,7 +165,8 @@ bash scripts/validate.sh
 - [Turn-taking state machine contract](docs/TURN_TAKING_STATE_MACHINE.md)
 - [Privacy + platform guide](docs/PRIVACY_PLATFORM_GUIDE.md)
 - [Real-world quality pass](docs/REAL_WORLD_QUALITY_PASS.md)
-- [Overnight progress log](docs/OVERNIGHT_PROGRESS.md)
+- [Safety posture](SAFETY.md)
+- [Examples](examples/README.md)
 
 ## Contributing
 
