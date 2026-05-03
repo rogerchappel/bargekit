@@ -1,0 +1,31 @@
+name: Feature request
+description: Suggest a turn-taking, fixture, integration, or demo improvement
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What voice-agent turn-taking issue should BargeKit solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the desired API, fixture, adapter, or behaviour.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - core engine
+        - fixtures/tuning
+        - browser adapter
+        - integrations
+        - docs/demo
+    validations:
+      required: true

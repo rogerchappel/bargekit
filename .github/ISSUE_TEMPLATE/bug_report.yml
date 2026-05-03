@@ -1,0 +1,33 @@
+name: Bug report
+description: Report a BargeKit state, fixture, CLI, or adapter problem
+title: "bug: "
+labels: [bug]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Include the mode, fixture, browser, or runtime if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Small fixture, CLI command, or code snippet preferred.
+      render: sh
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety/privacy check
+      options:
+        - label: This report does not attach raw private audio unless explicitly intended.
+          required: true
