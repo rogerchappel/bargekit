@@ -126,6 +126,7 @@ check_file "README.md"
 check_file "AGENTS.md"
 check_file "CONTRIBUTING.md"
 check_file "SECURITY.md"
+check_file "SAFETY.md"
 check_file ".github/pull_request_template.md"
 check_file "scripts/validate.sh"
 
@@ -134,6 +135,8 @@ printf '\nChecking bargekit required directories...\n'
 check_dir ".github"
 check_dir "docs"
 check_dir "scripts"
+check_dir "examples"
+check_dir "tests/fixtures"
 
 printf '\nRunning local project checks where present...\n'
 
