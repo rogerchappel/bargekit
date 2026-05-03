@@ -1,0 +1,1306 @@
+{
+  "name": "long_utterance",
+  "totalMs": 3200,
+  "frameMs": 20,
+  "baseline": 0.04,
+  "segments": [
+    {
+      "startMs": 520,
+      "endMs": 1520,
+      "level": 0.72,
+      "source": "microphone",
+      "label": "long-utterance"
+    }
+  ],
+  "metadata": {},
+  "samples": [
+    {
+      "timestamp": 0,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 20,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 40,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 60,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 80,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 100,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 120,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 140,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 160,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 180,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 200,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 220,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 240,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 260,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 280,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 300,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 320,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 340,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 360,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 380,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 400,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 420,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 440,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 460,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 480,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 500,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 520,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 540,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 560,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 580,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 600,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 620,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 640,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 660,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 680,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 700,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 720,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 740,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 760,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 780,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 800,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 820,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 840,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 860,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 880,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 900,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 920,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 940,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 960,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 980,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1000,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1020,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1040,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1060,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1080,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1100,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1120,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1140,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1160,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1180,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1200,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1220,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1240,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1260,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1280,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1300,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1320,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1340,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1360,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1380,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1400,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1420,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1440,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1460,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1480,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1500,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1520,
+      "level": 0.72,
+      "source": "microphone",
+      "metadata": {
+        "label": "long-utterance"
+      }
+    },
+    {
+      "timestamp": 1540,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1560,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1580,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1600,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1620,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1640,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1660,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1680,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1700,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1720,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1740,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1760,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1780,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1800,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1820,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1840,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1860,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1880,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1900,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1920,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1940,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1960,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 1980,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2000,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2020,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2040,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2060,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2080,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2100,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2120,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2140,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2160,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2180,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2200,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2220,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2240,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2260,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2280,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2300,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2320,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2340,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2360,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2380,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2400,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2420,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2440,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2460,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2480,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2500,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2520,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2540,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2560,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2580,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2600,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2620,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2640,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2660,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2680,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2700,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2720,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2740,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2760,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2780,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2800,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2820,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2840,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2860,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2880,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2900,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2920,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2940,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2960,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 2980,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3000,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3020,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3040,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3060,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3080,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3100,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3120,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3140,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3160,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3180,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    },
+    {
+      "timestamp": 3200,
+      "level": 0.04,
+      "source": "microphone",
+      "metadata": {
+        "label": "baseline"
+      }
+    }
+  ]
+}
