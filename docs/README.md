@@ -7,6 +7,7 @@
 - [Task queue](./TASKS.md)
 - [Turn-taking state machine](./TURN_TAKING_STATE_MACHINE.md)
 - [API reference](./API.md)
+- [CLI reference](./CLI.md)
 
 ## Build + demo references
 

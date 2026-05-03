@@ -166,6 +166,7 @@ bash scripts/validate.sh
 - [Privacy + platform guide](docs/PRIVACY_PLATFORM_GUIDE.md)
 - [Real-world quality pass](docs/REAL_WORLD_QUALITY_PASS.md)
 - [Safety posture](SAFETY.md)
+- [CLI reference](docs/CLI.md)
 - [Examples](examples/README.md)
 
 ## Contributing
