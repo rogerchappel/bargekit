@@ -17,7 +17,10 @@
     "check": "node scripts/check.mjs",
     "test": "node --test",
     "typecheck": "tsc --project tsconfig.json",
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "package:smoke": "npm pack --dry-run",
+    "release:check": "npm test && npm run check && npm run build && npm run package:smoke",
+    "smoke": "npm run build && bash scripts/smoke.sh"
   },
   "keywords": [
     "voice-agent",
@@ -27,5 +30,13 @@
     "turn-taking"
   ],
   "author": "Roger Chappel",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rogerchappel/bargekit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rogerchappel/bargekit/issues"
+  },
+  "homepage": "https://github.com/rogerchappel/bargekit#readme"
 }
