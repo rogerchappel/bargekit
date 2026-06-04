@@ -1,58 +1,40 @@
 {
-  "name": "@bargekit/core",
+  "name": "bargekit",
   "version": "0.1.0",
-  "description": "Local-first VAD, barge-in, and turn-taking primitives for interruptible voice agents.",
+  "description": "Local-first turn-taking primitives for interruptible voice agents.",
   "type": "module",
   "main": "./src/index.js",
   "exports": {
-    ".": "./src/index.js",
-    "./core": "./src/core.js",
-    "./web": "./src/web.js",
-    "./fixtures": "./src/fixtures.js",
-    "./fixture-io": "./src/fixture-io.js",
-    "./integrations": "./src/integrations.js",
-    "./recorder": "./src/recorder.js",
-    "./tuning": "./src/tuning.js"
+    ".": "./src/index.js"
   },
   "files": [
     "src",
     "demo",
-    "examples",
-    "tests/fixtures",
-    "docs",
     "README.md",
     "LICENSE",
-    "SECURITY.md",
-    "SAFETY.md"
+    "LICENSE"
   ],
   "scripts": {
     "check": "node scripts/check.mjs",
     "test": "node --test",
     "typecheck": "tsc --project tsconfig.json",
     "build": "node scripts/build.mjs",
-    "smoke": "node src/cli.js smoke --fixture tests/fixtures/interruption_timing.json --json"
+    "package:smoke": "npm pack --dry-run",
+    "release:check": "npm test && npm run package:smoke",
+    "smoke": "node test/fixtures.test.js"
   },
   "keywords": [
     "voice-agent",
     "vad",
     "barge-in",
     "microphone",
-    "turn-taking",
-    "speech-detection",
-    "voice-ui",
-    "local-first",
-    "duplex",
-    "echo-guard",
-    "agents"
+    "turn-taking"
   ],
   "author": "Roger Chappel",
   "license": "MIT",
-  "bin": {
-    "bargekit": "./src/cli.js"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rogerchappel/bargekit.git"
+    "url": "https://github.com/rogerchappel/bargekit"
   },
   "bugs": {
     "url": "https://github.com/rogerchappel/bargekit/issues"
