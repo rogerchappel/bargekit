@@ -1,17 +1,24 @@
 {
-  "name": "bargekit",
+  "name": "@bargekit/core",
   "version": "0.1.0",
   "description": "Local-first turn-taking primitives for interruptible voice agents.",
   "type": "module",
   "main": "./src/index.js",
+  "bin": {
+    "bargekit": "./src/cli.js"
+  },
   "exports": {
-    ".": "./src/index.js"
+    ".": "./src/index.js",
+    "./web": "./src/web.js",
+    "./fixtures": "./src/fixtures.js",
+    "./integrations": "./src/integrations.js",
+    "./tuning": "./src/tuning.js"
   },
   "files": [
     "src",
     "demo",
+    "examples",
     "README.md",
-    "LICENSE",
     "LICENSE"
   ],
   "scripts": {
@@ -20,7 +27,7 @@
     "typecheck": "tsc --project tsconfig.json",
     "build": "node scripts/build.mjs",
     "package:smoke": "npm pack --dry-run",
-    "release:check": "npm test && npm run package:smoke",
+    "release:check": "npm run check && npm test && npm run typecheck && npm run build && npm run smoke && npm run package:smoke",
     "smoke": "node test/fixtures.test.js"
   },
   "keywords": [
