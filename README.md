@@ -157,6 +157,7 @@ npm run check
 npm test
 npm run typecheck
 npm run build
+npm run release:check
 bash scripts/validate.sh
 ```
 
