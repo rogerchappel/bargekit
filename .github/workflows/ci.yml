@@ -60,7 +60,7 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then
             corepack enable
             pnpm install --frozen-lockfile
-            if pnpm run | grep -q " release:check"; then
+            if node -e "process.exit(require('./package.json').scripts?.['release:check'] ? 0 : 1)"; then
               pnpm run release:check
             else
               pnpm run check --if-present
@@ -71,7 +71,7 @@ jobs:
             fi
           elif [ -f package-lock.json ]; then
             npm ci
-            if npm run | grep -q " release:check"; then
+            if node -e "process.exit(require('./package.json').scripts?.['release:check'] ? 0 : 1)"; then
               npm run release:check
             else
               npm run check --if-present
@@ -82,7 +82,7 @@ jobs:
             fi
           else
             npm install
-            if npm run | grep -q " release:check"; then
+            if node -e "process.exit(require('./package.json').scripts?.['release:check'] ? 0 : 1)"; then
               npm run release:check
             else
               npm run check --if-present
