@@ -19,7 +19,10 @@
     "demo",
     "examples",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "SECURITY.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md"
   ],
   "scripts": {
     "check": "node scripts/check.mjs",
@@ -41,7 +44,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rogerchappel/bargekit"
+    "url": "git+https://github.com/rogerchappel/bargekit.git"
   },
   "bugs": {
     "url": "https://github.com/rogerchappel/bargekit/issues"
