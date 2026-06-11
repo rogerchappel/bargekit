@@ -48,25 +48,48 @@ jobs:
             exit 1
           fi
 
-      - name: Run optional Node checks
+      - name: Run package verification
         run: |
           set -euo pipefail
 
           if [ ! -f package.json ]; then
             echo "No package.json found; skipping Node checks."
-            echo "TODO: add install, lint, test, typecheck, or build commands when this template becomes an app or package."
             exit 0
           fi
 
-          if [ -f package-lock.json ]; then
+          if [ -f pnpm-lock.yaml ]; then
+            corepack enable
+            pnpm install --frozen-lockfile
+            if pnpm run | grep -q " release:check"; then
+              pnpm run release:check
+            else
+              pnpm run check --if-present
+              pnpm test --if-present
+              pnpm run build --if-present
+              pnpm run smoke --if-present
+              pnpm run package:smoke --if-present
+            fi
+          elif [ -f package-lock.json ]; then
             npm ci
+            if npm run | grep -q " release:check"; then
+              npm run release:check
+            else
+              npm run check --if-present
+              npm test --if-present
+              npm run build --if-present
+              npm run smoke --if-present
+              npm run package:smoke --if-present
+            fi
           else
             npm install
+            if npm run | grep -q " release:check"; then
+              npm run release:check
+            else
+              npm run check --if-present
+              npm test --if-present
+              npm run build --if-present
+              npm run smoke --if-present
+              npm run package:smoke --if-present
+            fi
           fi
 
-          npm run check --if-present
-          npm test --if-present
-          npm run typecheck --if-present
-          npm run build --if-present
-          npm run smoke --if-present
-          bash scripts/validate.sh
