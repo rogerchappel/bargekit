@@ -2,57 +2,15 @@
 
 ## Supported Versions
 
-Replace this section with the supported versions for `bargekit`.
+This project is currently in its initial 0.x release line. Security fixes are targeted at the latest published 0.x version and the current main branch. Older snapshots, forks, generated demo copies, and unpublished local builds are not supported.
 
-Example:
-
-```md
 | Version | Supported |
 | --- | --- |
-| .x | Yes |
-| < .0 | No |
-```
-
-If the project does not publish versioned releases yet, say that clearly.
+| Latest 0.x | Yes |
+| Older 0.x snapshots | No |
 
 ## Reporting a Vulnerability
 
-Please do not report suspected vulnerabilities in public issues, pull requests, or discussions.
+Please report suspected vulnerabilities through GitHub Security Advisories when available, or open a minimal public issue that avoids secrets, exploit payloads, private logs, and customer data. Include the affected version or commit, reproduction steps, expected impact, and any safe mitigation you have already tried.
 
-Ask maintainers for the private security reporting path before sharing details.
-
-If no private reporting path exists yet, ask maintainers through public project channels for a private reporting path. Do not include exploit details, secrets, personal data, or sensitive technical details in public messages.
-
-## What to Include
-
-When a private reporting path is available, include:
-
-- A clear description of the issue.
-- Affected versions, files, packages, workflows, or configuration.
-- Steps to reproduce, proof of concept, or attack scenario when safe to share.
-- Potential impact.
-- Suggested mitigation, if known.
-
-## Response Expectations
-
-Maintainers review good-faith reports as capacity allows.
-
-Do not imply paid support, guaranteed response times, guaranteed fixes, or service-level agreements unless `bargekit` explicitly provides them.
-
-## Scope
-
-In scope:
-
-- Vulnerabilities in bargekit.
-- Insecure default configuration shipped by this project.
-- CI, release, or dependency guidance maintained by this project.
-
-Out of scope:
-
-- General support requests.
-- Requests for guaranteed maintenance timelines.
-- Issues in unrelated downstream projects.
-
-## Disclosure
-
-Coordinate disclosure with maintainers before publishing vulnerability details.
+The maintainer will triage reports on a best-effort basis. Public fixes should include a regression test or fixture when practical, plus release notes that describe the impact without exposing sensitive details.
