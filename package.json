@@ -32,7 +32,8 @@
     "build": "node scripts/build.mjs",
     "package:smoke": "npm pack --dry-run",
     "release:check": "npm run check && npm test && npm run typecheck && npm run build && npm run smoke && npm run package:smoke",
-    "smoke": "node test/fixtures.test.js"
+    "smoke": "node test/fixtures.test.js",
+    "lint": "npm run check"
   },
   "keywords": [
     "voice-agent",
