@@ -7,6 +7,10 @@ format and uses semantic versioning when versioned releases are published.
 
 ## [Unreleased]
 
+- Package smoke verification now checks the CLI bin target, documentation,
+  safety notes, package metadata, and npm files allowlist before the dry-run
+  pack.
+
 ### Added
 
 - Local-first turn-taking engine with VAD, push-to-talk, wake-hook, half-duplex, mute, and barge-in semantics.

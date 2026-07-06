@@ -157,9 +157,15 @@ npm run check
 npm test
 npm run typecheck
 npm run build
+npm run smoke
+npm run package:smoke
 npm run release:check
 bash scripts/validate.sh
 ```
+
+`npm run package:smoke` verifies the published `bargekit` bin target, package
+metadata, documentation links, safety notes, and files allowlist before printing
+the `npm pack --dry-run` tarball contents.
 
 ## Documentation
 
