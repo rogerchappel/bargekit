@@ -15,6 +15,15 @@ test('cli lists built-in fixtures as json', () => {
   assert.ok(fixtures.some((fixture) => fixture.name === 'interruption_timing'));
 });
 
+test('cli help documents non-recording local commands', () => {
+  const result = runCli(['--help']);
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /Usage:/);
+  assert.match(result.stdout, /bargekit fixtures/);
+  assert.match(result.stdout, /bargekit tune/);
+  assert.match(result.stdout, /No command records audio/);
+});
+
 test('cli smokes a checked-in fixture file', () => {
   const result = runCli(['smoke', '--fixture', 'tests/fixtures/interruption_timing.json', '--json']);
   assert.equal(result.status, 0, result.stderr);
