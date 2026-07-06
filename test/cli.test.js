@@ -33,10 +33,27 @@ test('cli smokes a checked-in fixture file', () => {
   assert.equal(payload.passed, true);
 });
 
+test('cli smokes a built-in fixture by name for installed users', () => {
+  const result = runCli(['smoke', '--name', 'interruption_timing', '--json']);
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.fixture, 'interruption_timing');
+  assert.equal(payload.speechStarted, true);
+  assert.equal(payload.passed, true);
+});
+
 test('cli tune can analyze a fixture file', () => {
   const result = runCli(['tune', '--fixture', 'tests/fixtures/long_utterance.json', '--json']);
   assert.equal(result.status, 0, result.stderr);
   const report = JSON.parse(result.stdout);
   assert.equal(report[0].fixture, 'long_utterance');
   assert.ok(report[0].speechFrames > 0);
+});
+
+test('cli tune can use bundled fixtures without file paths', () => {
+  const result = runCli(['tune', '--profile', 'wired_headset', '--json']);
+  assert.equal(result.status, 0, result.stderr);
+  const report = JSON.parse(result.stdout);
+  assert.ok(report.some((item) => item.fixture === 'interruption_timing'));
+  assert.ok(report.every((item) => Number.isFinite(item.peakLevel)));
 });

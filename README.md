@@ -90,12 +90,12 @@ Everything currently ships from one package with a few focused entry surfaces:
 
 ```sh
 bargekit fixtures --json
-bargekit tune --fixture tests/fixtures/long_utterance.json --json
-bargekit smoke --fixture tests/fixtures/interruption_timing.json --json
+bargekit tune --profile wired_headset --json
+bargekit smoke --name interruption_timing --json
 bargekit demo
 ```
 
-The CLI uses synthetic/local fixture data only; it does not open a microphone.
+The CLI uses built-in synthetic data or explicit local fixture files only; it does not open a microphone.
 
 ## Demo
 
