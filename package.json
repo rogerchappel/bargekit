@@ -53,5 +53,8 @@
   "bugs": {
     "url": "https://github.com/rogerchappel/bargekit/issues"
   },
-  "homepage": "https://github.com/rogerchappel/bargekit#readme"
+  "homepage": "https://github.com/rogerchappel/bargekit#readme",
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
 }

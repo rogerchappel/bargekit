@@ -64,6 +64,14 @@ Next recommended task:
 
 Every contribution should include verification.
 
+This repository uses npm and commits `package-lock.json`. Install the exact
+development toolchain from a fresh checkout before running checks:
+
+```sh
+npm ci
+npm run release:check
+```
+
 Examples:
 
 - Documentation: inspect rendered Markdown or review the diff.
