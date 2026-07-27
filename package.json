@@ -11,7 +11,9 @@
     ".": "./src/index.js",
     "./web": "./src/web.js",
     "./fixtures": "./src/fixtures.js",
+    "./fixture-io": "./src/fixture-io.js",
     "./integrations": "./src/integrations.js",
+    "./recorder": "./src/recorder.js",
     "./tuning": "./src/tuning.js"
   },
   "files": [
