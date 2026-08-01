@@ -34,8 +34,9 @@
     "test": "node --test",
     "typecheck": "tsc --project tsconfig.json",
     "build": "node scripts/build.mjs",
+    "package:install-docs": "node scripts/verify-install-docs.mjs",
     "package:imports": "node scripts/verify-documented-imports.mjs",
-    "package:smoke": "node scripts/verify-package.mjs && npm run package:imports && npm pack --dry-run",
+    "package:smoke": "node scripts/verify-package.mjs && npm run package:install-docs && npm run package:imports && npm pack --dry-run",
     "release:check": "npm run check && npm test && npm run typecheck && npm run build && npm run smoke && npm run package:smoke",
     "smoke": "node test/fixtures.test.js",
     "lint": "npm run check"
