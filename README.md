@@ -32,9 +32,20 @@ What it does **not** promise yet:
 
 ## Install
 
+`@bargekit/core` is **not published to npm yet**. Install it from a source
+checkout and a locally built tarball:
+
 ```sh
-npm install @bargekit/core
+git clone https://github.com/rogerchappel/bargekit.git bargekit
+npm --prefix bargekit ci
+npm pack ./bargekit
+npm install ./bargekit-core-0.1.0.tgz
 ```
+
+The final command installs the same package contents that a future registry
+release will contain. Run it from the consumer project where you want to use
+BargeKit. Contributors working directly in the checkout can run commands with
+`npm --prefix bargekit run <script>` after `npm ci`.
 
 ## Quick start
 
