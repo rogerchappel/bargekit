@@ -87,9 +87,48 @@ export class WebMicrophoneAdapter {
       return { started: true, constraints };
     } catch (error) {
       const code = classifyMediaError(error);
-      this.engine.raiseError(new Error(code), this.now());
+      await this.cleanupResources();
+      try {
+        this.engine.raiseError(new Error(code), this.now());
+      } catch {}
       throw Object.assign(new Error(code), { cause: error });
     }
+  }
+
+  async cleanupResources() {
+    if (this.intervalId !== null) {
+      try {
+        this.clearIntervalRef(this.intervalId);
+      } catch {}
+    }
+
+    try {
+      this.sourceNode?.disconnect?.();
+    } catch {}
+    try {
+      this.analyser?.disconnect?.();
+    } catch {}
+
+    let tracks = [];
+    try {
+      tracks = this.stream?.getTracks?.() ?? [];
+    } catch {}
+    for (const track of tracks) {
+      try {
+        track.stop();
+      } catch {}
+    }
+
+    try {
+      await this.audioContext?.close?.();
+    } catch {}
+
+    this.stream = null;
+    this.audioContext = null;
+    this.sourceNode = null;
+    this.analyser = null;
+    this.intervalId = null;
+    this.reuseBuffer = new Float32Array(0);
   }
 
   sampleOnce(timestamp = this.now()) {
@@ -104,21 +143,8 @@ export class WebMicrophoneAdapter {
   }
 
   async stop() {
-    if (this.intervalId) {
-      this.clearIntervalRef(this.intervalId);
-      this.intervalId = null;
-    }
-
-    this.sourceNode?.disconnect?.();
-    this.analyser?.disconnect?.();
-    this.stream?.getTracks?.().forEach((track) => track.stop());
-    await this.audioContext?.close?.();
+    await this.cleanupResources();
     this.engine.stop(this.now());
-
-    this.stream = null;
-    this.audioContext = null;
-    this.sourceNode = null;
-    this.analyser = null;
     return { stopped: true };
   }
 }

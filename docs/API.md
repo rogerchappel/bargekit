@@ -41,7 +41,7 @@ The ducking controller turns barge-in events into hold/duck/cancel/resume decisi
 import { createWebMicrophoneAdapter } from '@bargekit/core/web';
 ```
 
-The browser adapter requests microphone permission explicitly, samples analyser levels, and does not record or upload audio.
+The browser adapter requests microphone permission explicitly, samples analyser levels, and does not record or upload audio. `start()` is failure-atomic: if setup fails after permission is granted, it stops acquired tracks, clears timers, disconnects the audio graph, closes the audio context, and releases its resource references before rejecting with the classified microphone error.
 
 ## Observability and tuning
 

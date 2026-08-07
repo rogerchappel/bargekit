@@ -40,8 +40,14 @@ class FakeAnalyser {
 }
 
 class FakeSourceNode {
+  constructor() {
+    this.disconnected = false;
+  }
+
   connect() {}
-  disconnect() {}
+  disconnect() {
+    this.disconnected = true;
+  }
 }
 
 class FakeAudioContext {
@@ -131,5 +137,76 @@ test('web adapter surfaces permission denied errors', async () => {
   });
 
   await assert.rejects(() => adapter.start(), /permission_denied/);
+  assert.equal(engine.getSnapshot().state, 'error');
+});
+
+test('web adapter releases the stream when AudioContext construction fails', async () => {
+  const engine = createBargeKit();
+  const stream = new FakeStream();
+  const adapter = createWebMicrophoneAdapter({
+    engine,
+    navigatorRef: {
+      mediaDevices: { async getUserMedia() { return stream; } }
+    },
+    AudioContextCtor: class {
+      constructor() {
+        throw new Error('context construction failed');
+      }
+    }
+  });
+
+  await assert.rejects(
+    () => adapter.start(),
+    (error) => error.message === 'microphone_error' && error.cause.message === 'context construction failed'
+  );
+  assert.equal(stream.getTracks()[0].stopped, true);
+  assert.equal(adapter.stream, null);
+  assert.equal(adapter.audioContext, null);
+  assert.equal(adapter.sourceNode, null);
+  assert.equal(adapter.analyser, null);
+  assert.equal(adapter.intervalId, null);
+  assert.equal(engine.getSnapshot().state, 'error');
+});
+
+test('web adapter tears down graph and leaves no timer after late start failure', async () => {
+  const engine = createBargeKit();
+  const stream = new FakeStream();
+  const analyser = new FakeAnalyser();
+  const context = new FakeAudioContext(analyser);
+  const source = new FakeSourceNode();
+  context.createMediaStreamSource = () => source;
+  context.createAnalyser = () => {
+    throw new Error('analyser setup failed');
+  };
+  const activeTimers = [];
+  const adapter = createWebMicrophoneAdapter({
+    engine,
+    navigatorRef: {
+      mediaDevices: { async getUserMedia() { return stream; } }
+    },
+    AudioContextCtor: class { constructor() { return context; } },
+    setIntervalRef(handler) {
+      activeTimers.push(handler);
+      return 0;
+    },
+    clearIntervalRef(timer) {
+      assert.equal(timer, 0);
+      activeTimers.length = 0;
+    }
+  });
+
+  await assert.rejects(
+    () => adapter.start(),
+    (error) => error.message === 'microphone_error' && error.cause.message === 'analyser setup failed'
+  );
+  assert.equal(stream.getTracks()[0].stopped, true);
+  assert.equal(source.disconnected, true);
+  assert.equal(context.closed, true);
+  assert.equal(activeTimers.length, 0);
+  assert.equal(adapter.stream, null);
+  assert.equal(adapter.audioContext, null);
+  assert.equal(adapter.sourceNode, null);
+  assert.equal(adapter.analyser, null);
+  assert.equal(adapter.intervalId, null);
   assert.equal(engine.getSnapshot().state, 'error');
 });
