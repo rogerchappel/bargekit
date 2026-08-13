@@ -210,3 +210,101 @@ test('web adapter tears down graph and leaves no timer after late start failure'
   assert.equal(adapter.intervalId, null);
   assert.equal(engine.getSnapshot().state, 'error');
 });
+
+test('web adapter reuses an active session across sequential start calls', async () => {
+  const streams = [];
+  const contexts = [];
+  const activeTimers = new Set();
+  const adapter = createWebMicrophoneAdapter({
+    navigatorRef: {
+      mediaDevices: {
+        async getUserMedia() {
+          const stream = new FakeStream();
+          streams.push(stream);
+          return stream;
+        }
+      }
+    },
+    AudioContextCtor: class {
+      constructor() {
+        const context = new FakeAudioContext(new FakeAnalyser());
+        contexts.push(context);
+        return context;
+      }
+    },
+    setIntervalRef(handler) {
+      activeTimers.add(handler);
+      return handler;
+    },
+    clearIntervalRef(handler) {
+      activeTimers.delete(handler);
+    }
+  });
+
+  const first = await adapter.start();
+  const second = await adapter.start({ audio: { echoCancellation: false } });
+
+  assert.strictEqual(second, first);
+  assert.equal(streams.length, 1);
+  assert.equal(contexts.length, 1);
+  assert.equal(activeTimers.size, 1);
+
+  await adapter.stop();
+  assert.equal(streams[0].tracks[0].stopped, true);
+  assert.equal(contexts[0].closed, true);
+  assert.equal(activeTimers.size, 0);
+
+  const restarted = await adapter.start();
+  assert.notStrictEqual(restarted, first);
+  assert.equal(streams.length, 2);
+  assert.equal(contexts.length, 2);
+  assert.equal(activeTimers.size, 1);
+
+  await adapter.stop();
+  assert.equal(streams[1].tracks[0].stopped, true);
+  assert.equal(contexts[1].closed, true);
+  assert.equal(activeTimers.size, 0);
+});
+
+test('web adapter shares overlapping startup and stop releases the acquired session', async () => {
+  let resolvePermission;
+  let permissionRequests = 0;
+  const stream = new FakeStream();
+  const context = new FakeAudioContext(new FakeAnalyser());
+  const activeTimers = new Set();
+  const adapter = createWebMicrophoneAdapter({
+    navigatorRef: {
+      mediaDevices: {
+        getUserMedia() {
+          permissionRequests += 1;
+          return new Promise((resolve) => { resolvePermission = resolve; });
+        }
+      }
+    },
+    AudioContextCtor: class { constructor() { return context; } },
+    setIntervalRef(handler) {
+      activeTimers.add(handler);
+      return handler;
+    },
+    clearIntervalRef(handler) {
+      activeTimers.delete(handler);
+    }
+  });
+
+  const firstStart = adapter.start();
+  const secondStart = adapter.start();
+  const stop = adapter.stop();
+  assert.equal(permissionRequests, 1);
+
+  resolvePermission(stream);
+  const [first, second] = await Promise.all([firstStart, secondStart]);
+  assert.strictEqual(second, first);
+  await stop;
+
+  assert.equal(stream.tracks[0].stopped, true);
+  assert.equal(context.closed, true);
+  assert.equal(activeTimers.size, 0);
+  assert.equal(adapter.stream, null);
+  assert.equal(adapter.audioContext, null);
+  assert.equal(adapter.intervalId, null);
+});
