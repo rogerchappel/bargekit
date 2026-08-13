@@ -253,6 +253,17 @@ test('web adapter reuses an active session across sequential start calls', async
   assert.equal(streams[0].tracks[0].stopped, true);
   assert.equal(contexts[0].closed, true);
   assert.equal(activeTimers.size, 0);
+
+  const restarted = await adapter.start();
+  assert.notStrictEqual(restarted, first);
+  assert.equal(streams.length, 2);
+  assert.equal(contexts.length, 2);
+  assert.equal(activeTimers.size, 1);
+
+  await adapter.stop();
+  assert.equal(streams[1].tracks[0].stopped, true);
+  assert.equal(contexts[1].closed, true);
+  assert.equal(activeTimers.size, 0);
 });
 
 test('web adapter shares overlapping startup and stop releases the acquired session', async () => {
