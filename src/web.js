@@ -58,9 +58,38 @@ export class WebMicrophoneAdapter {
     this.analyser = null;
     this.intervalId = null;
     this.reuseBuffer = new Float32Array(0);
+    this.startPromise = null;
+    this.stopPromise = null;
+    this.startResult = null;
   }
 
-  async start(options = {}) {
+  start(options = {}) {
+    if (this.stopPromise) {
+      return this.stopPromise.then(() => this.start(options));
+    }
+
+    if (this.startResult) {
+      return Promise.resolve(this.startResult);
+    }
+
+    if (this.startPromise) {
+      return this.startPromise;
+    }
+
+    const operation = this.startSession(options);
+    this.startPromise = operation;
+    operation.then(
+      () => {
+        if (this.startPromise === operation) this.startPromise = null;
+      },
+      () => {
+        if (this.startPromise === operation) this.startPromise = null;
+      }
+    );
+    return operation;
+  }
+
+  async startSession(options) {
     if (!this.navigatorRef?.mediaDevices?.getUserMedia) {
       throw new Error('getUserMedia is not available in this environment');
     }
@@ -84,10 +113,12 @@ export class WebMicrophoneAdapter {
       this.sourceNode.connect(this.analyser);
       this.engine.start(this.now());
       this.intervalId = this.setIntervalRef(() => this.sampleOnce(), this.config.frameIntervalMs);
-      return { started: true, constraints };
+      this.startResult = { started: true, constraints };
+      return this.startResult;
     } catch (error) {
       const code = classifyMediaError(error);
       await this.cleanupResources();
+      this.startResult = null;
       try {
         this.engine.raiseError(new Error(code), this.now());
       } catch {}
@@ -142,10 +173,34 @@ export class WebMicrophoneAdapter {
     return { timestamp, level };
   }
 
-  async stop() {
-    await this.cleanupResources();
-    this.engine.stop(this.now());
-    return { stopped: true };
+  stop() {
+    if (this.stopPromise) {
+      return this.stopPromise;
+    }
+
+    const pendingStart = this.startPromise;
+    const operation = (async () => {
+      if (pendingStart) {
+        try {
+          await pendingStart;
+        } catch {}
+      }
+      await this.cleanupResources();
+      this.startResult = null;
+      this.engine.stop(this.now());
+      return { stopped: true };
+    })();
+
+    this.stopPromise = operation;
+    operation.then(
+      () => {
+        if (this.stopPromise === operation) this.stopPromise = null;
+      },
+      () => {
+        if (this.stopPromise === operation) this.stopPromise = null;
+      }
+    );
+    return operation;
   }
 }
 
