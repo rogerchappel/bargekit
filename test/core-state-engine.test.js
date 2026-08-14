@@ -72,18 +72,18 @@ test('active speech ends after sustained sub-speech noise at the noise floor', (
   engine.ingestLevel({ timestamp: 0, level: 0.8 });
   engine.ingestLevel({ timestamp: 20, level: 0.8 });
   engine.ingestLevel({ timestamp: 80, level: 0.2 });
-  engine.ingestLevel({ timestamp: 120, level: 0.2 });
+  engine.ingestLevel({ timestamp: 180, level: 0.2 });
 
   assert.equal(ends.length, 1);
   assert.equal(ends[0].reason, 'vad.speech.end');
-  assert.equal(ends[0].endedAt, 120);
+  assert.equal(ends[0].endedAt, 180);
   assert.equal(engine.getSnapshot().state, 'cooldown');
 
-  engine.ingestLevel({ timestamp: 140, level: 0.2 });
+  engine.ingestLevel({ timestamp: 200, level: 0.2 });
   assert.equal(ends.length, 1);
   assert.equal(engine.getSnapshot().state, 'cooldown');
 
-  engine.ingestLevel({ timestamp: 160, level: 0.05 });
+  engine.ingestLevel({ timestamp: 220, level: 0.05 });
   assert.equal(ends.length, 1);
   assert.equal(engine.getSnapshot().state, 'listening');
 });

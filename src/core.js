@@ -271,19 +271,6 @@ export class BargeKitEngine {
       return this.getSnapshot();
     }
 
-    if (normalized.level >= this.config.noiseFloorThreshold) {
-      this.candidateSpeech = null;
-      this.emitter.emit('bargekit.input.noise_gated', {
-        type: 'bargekit.input.noise_gated',
-        timestamp,
-        level: normalized.level
-      });
-      if (!this.activeSpeech) {
-        this.#setState('noise_gated', timestamp, 'mic.level');
-      }
-      return this.getSnapshot();
-    }
-
     this.candidateSpeech = null;
     if (this.activeSpeech) {
       if (this.lastBelowThresholdAt === 0) {
@@ -296,6 +283,16 @@ export class BargeKitEngine {
       }
 
       this.#setState('user_speaking', timestamp, 'mic.level');
+      return this.getSnapshot();
+    }
+
+    if (normalized.level >= this.config.noiseFloorThreshold) {
+      this.emitter.emit('bargekit.input.noise_gated', {
+        type: 'bargekit.input.noise_gated',
+        timestamp,
+        level: normalized.level
+      });
+      this.#setState('noise_gated', timestamp, 'mic.level');
       return this.getSnapshot();
     }
 
