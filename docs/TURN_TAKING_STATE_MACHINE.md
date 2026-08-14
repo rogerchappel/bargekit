@@ -105,10 +105,10 @@ Required fields: `mode`, `speechThreshold`, `noiseFloorThreshold`, `minSpeechMs`
 ### VAD/open microphone
 
 - `armed` + qualifying speech -> `user_speaking`
-- `armed` + level below `speechThreshold` but above `noiseFloorThreshold` -> `noise_gated`
+- `armed` + level below `speechThreshold` but at or above `noiseFloorThreshold` -> `noise_gated`
 - `noise_gated` + qualifying speech -> `user_speaking`
-- `user_speaking` + silence for `silenceMs` -> `cooldown`
-- `cooldown` after `cooldownMs` -> `armed`
+- `user_speaking` + level below `speechThreshold` for `silenceMs` -> `cooldown` (the idle noise floor does not extend an active utterance)
+- after `cooldownMs`, the next input is evaluated normally from the open-microphone gate
 
 ### Wake-hook
 
