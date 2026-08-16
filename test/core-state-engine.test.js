@@ -56,6 +56,38 @@ test('engine noise-gates keyboard-like bursts below speech threshold', () => {
   assert.ok(events.every((event) => event.level >= 0.18 && event.level < 0.6));
 });
 
+test('active speech ends after sustained sub-speech noise at the noise floor', () => {
+  const engine = createBargeKit({
+    mode: 'vad',
+    speechThreshold: 0.5,
+    noiseFloorThreshold: 0.1,
+    minSpeechMs: 20,
+    debounceMs: 20,
+    silenceMs: 100,
+    cooldownMs: 40
+  });
+  const ends = collect(engine, 'bargekit.user_speech.ended');
+
+  engine.start(0);
+  engine.ingestLevel({ timestamp: 0, level: 0.8 });
+  engine.ingestLevel({ timestamp: 20, level: 0.8 });
+  engine.ingestLevel({ timestamp: 80, level: 0.2 });
+  engine.ingestLevel({ timestamp: 180, level: 0.2 });
+
+  assert.equal(ends.length, 1);
+  assert.equal(ends[0].reason, 'vad.speech.end');
+  assert.equal(ends[0].endedAt, 180);
+  assert.equal(engine.getSnapshot().state, 'cooldown');
+
+  engine.ingestLevel({ timestamp: 200, level: 0.2 });
+  assert.equal(ends.length, 1);
+  assert.equal(engine.getSnapshot().state, 'cooldown');
+
+  engine.ingestLevel({ timestamp: 220, level: 0.05 });
+  assert.equal(ends.length, 1);
+  assert.equal(engine.getSnapshot().state, 'listening');
+});
+
 test('push-to-talk mode ignores speech until push is held', () => {
   const engine = createBargeKit({ mode: 'push_to_talk', minSpeechMs: 80, debounceMs: 40 });
   const starts = collect(engine, 'bargekit.user_speech.started');
