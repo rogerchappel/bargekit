@@ -3,13 +3,16 @@ import { analyzeFixtureForThresholds } from './fixtures.js';
 
 export function recommendThresholds(fixtures, options = {}) {
   const analyses = fixtures.map((fixture) => analyzeFixtureForThresholds(fixture, options));
-  const peaks = analyses.map((analysis) => analysis.peakLevel).filter((level) => level > 0).sort((a, b) => a - b);
+  const noisePeaks = analyses
+    .map((analysis) => analysis.peakNoiseLevel)
+    .filter((level) => level > 0)
+    .sort((a, b) => a - b);
   const speechAverages = analyses
     .map((analysis) => analysis.averageSpeechLevel)
     .filter((level) => level > 0)
     .sort((a, b) => a - b);
 
-  const noiseCeiling = percentile(peaks, 0.5) || DEFAULT_CONFIG.noiseFloorThreshold;
+  const noiseCeiling = percentile(noisePeaks, 0.5) || DEFAULT_CONFIG.noiseFloorThreshold;
   const speechFloor = percentile(speechAverages, 0.25) || DEFAULT_CONFIG.speechThreshold;
   const speechThreshold = clamp(round(Math.max(speechFloor * 0.82, noiseCeiling + 0.18)), 0.2, 0.9);
   const noiseFloorThreshold = clamp(round(Math.min(noiseCeiling + 0.04, speechThreshold - 0.1)), 0.04, 0.5);
