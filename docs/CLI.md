@@ -13,7 +13,9 @@ bargekit fixtures --json
 
 ## `bargekit tune`
 
-Analyze a fixture and print threshold guidance.
+Analyze a fixture and print threshold guidance. The report separates the highest
+ambient level below the configured speech threshold (`peakNoiseLevel`) from the
+average level of frames classified as speech (`averageSpeechLevel`).
 
 ```sh
 bargekit tune --fixture tests/fixtures/long_utterance.json
