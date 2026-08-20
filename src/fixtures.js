@@ -117,6 +117,7 @@ export function analyzeFixtureForThresholds(fixture, overrides = {}) {
   let noiseFrames = 0;
   let quietFrames = 0;
   let peakLevel = 0;
+  let peakNoiseLevel = 0;
 
   for (const sample of fixture.samples) {
     peakLevel = Math.max(peakLevel, sample.level);
@@ -125,6 +126,7 @@ export function analyzeFixtureForThresholds(fixture, overrides = {}) {
       continue;
     }
 
+    peakNoiseLevel = Math.max(peakNoiseLevel, sample.level);
     if (sample.level >= config.noiseFloorThreshold) {
       noiseFrames += 1;
       continue;
@@ -139,7 +141,8 @@ export function analyzeFixtureForThresholds(fixture, overrides = {}) {
       .reduce((sum, sample) => sum + sample.level, 0) / speechFrames;
 
   const suggestedProfile = Object.entries(PRESET_PROFILES).reduce((best, [name, profile]) => {
-    const distance = Math.abs(profile.speechThreshold - averageSpeechLevel || config.speechThreshold);
+    const comparisonLevel = averageSpeechLevel || config.speechThreshold;
+    const distance = Math.abs(profile.speechThreshold - comparisonLevel);
     if (!best || distance < best.distance) {
       return { name, distance };
     }
@@ -152,6 +155,7 @@ export function analyzeFixtureForThresholds(fixture, overrides = {}) {
     noiseFrames,
     quietFrames,
     peakLevel,
+    peakNoiseLevel,
     averageSpeechLevel,
     suggestedProfile,
     explanation: speechFrames === 0

@@ -28,6 +28,7 @@ test('tuning analysis explains threshold decisions and suggests a profile', () =
   });
 
   assert.equal(analysis.speechFrames, 0);
+  assert.equal(analysis.peakNoiseLevel, 0.23);
   assert.match(analysis.explanation, /No speech crossed/);
   assert.ok(analysis.suggestedProfile);
 });
