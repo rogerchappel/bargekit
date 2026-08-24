@@ -12,6 +12,13 @@ const documentedImports = [
       .map((match) => match[1])
   )
 ];
+const staleCoreExamples = ['EVENTS.userSpeechStarted', 'setPushToTalk(', 'triggerWake('];
+
+for (const example of staleCoreExamples) {
+  if (apiDocs.includes(example)) {
+    throw new Error(`docs/API.md references unsupported core API: ${example}`);
+  }
+}
 
 if (documentedImports.length === 0) {
   throw new Error('docs/API.md does not contain any @bargekit/core imports');
@@ -51,10 +58,28 @@ try {
     ['install', '--ignore-scripts', '--no-audit', '--no-fund', tarballPath],
     { cwd: consumerDir, stdio: 'inherit' }
   );
-  writeFileSync(
-    join(consumerDir, 'verify.mjs'),
-    `await Promise.all(${JSON.stringify(documentedImports)}.map((specifier) => import(specifier)));\n`
-  );
+  const documentedNames = new Map();
+  for (const match of apiDocs.matchAll(/import\s*{([^}]+)}\s*from\s*['"](@bargekit\/core(?:\/[^'"]+)?)['"]/g)) {
+    const names = match[1].split(',').map((name) => name.trim()).filter(Boolean);
+    documentedNames.set(match[2], [...(documentedNames.get(match[2]) ?? []), ...names]);
+  }
+  writeFileSync(join(consumerDir, 'verify.mjs'), `
+const documentedNames = new Map(${JSON.stringify([...documentedNames])});
+for (const [specifier, names] of documentedNames) {
+  const module = await import(specifier);
+  for (const name of names) {
+    if (!(name in module)) throw new Error(\`\${specifier} does not export \${name}\`);
+  }
+}
+const { createBargeKit } = await import('@bargekit/core');
+const engine = createBargeKit({ mode: 'vad' });
+for (const method of ['on', 'ingestLevel', 'press', 'release', 'detectWake']) {
+  if (typeof engine[method] !== 'function') throw new Error(\`BargeKitEngine does not provide \${method}()\`);
+}
+const unsubscribe = engine.on('bargekit.user_speech.started', () => {});
+if (typeof unsubscribe !== 'function') throw new Error('BargeKitEngine.on() must return an unsubscribe function');
+unsubscribe();
+`);
   execFileSync('node', ['verify.mjs'], { cwd: consumerDir, stdio: 'inherit' });
 
   console.log(`verified documented imports from packed tarball: ${documentedImports.join(', ')}`);
