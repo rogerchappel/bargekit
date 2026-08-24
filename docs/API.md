@@ -8,21 +8,28 @@ BargeKit is a small ESM package. The public surface is split by runtime so apps 
 import { createBargeKit, BargeKitEngine, MODES, STATES, EVENTS } from '@bargekit/core';
 ```
 
-Use `createBargeKit(config)` for the deterministic turn-taking state machine. Feed it level frames with `engine.ingestLevel({ timestamp, level })`; subscribe with `engine.on(EVENTS.userSpeechStarted, handler)`.
+Use `createBargeKit(config)` for the deterministic turn-taking state machine. Feed it level frames with `engine.ingestLevel({ timestamp, level })`; subscribe with the literal event names listed in `EVENTS`:
+
+```js
+const engine = createBargeKit({ mode: 'vad' });
+const unsubscribe = engine.on('bargekit.user_speech.started', handler);
+engine.ingestLevel({ timestamp: Date.now(), level: 0.7 });
+unsubscribe();
+```
 
 Key behaviours:
 
 - `vad` mode opens from level threshold and debounce timing.
-- `push_to_talk` ignores hot levels until `setPushToTalk(true)`.
-- `wake_hook` requires `triggerWake()` before speech can open the gate.
+- `push_to_talk` ignores hot levels until `press()` and stops accepting them after `release()`.
+- `wake_hook` requires `detectWake()` before speech can open the gate.
 - `half_duplex` holds input while agent output is active.
 - mute always wins over speech detection.
 
 ## Fixtures
 
 ```js
-import { SYNTHETIC_FIXTURES, runFixture, loadFixtureFile } from '@bargekit/core/fixtures';
-import { saveFixtureFile, createFixtureFromLevels } from '@bargekit/core/fixture-io';
+import { SYNTHETIC_FIXTURES, runFixture } from '@bargekit/core/fixtures';
+import { loadFixtureFile, saveFixtureFile, createFixtureFromLevels } from '@bargekit/core/fixture-io';
 ```
 
 Built-in fixtures are synthetic level traces, not recordings. Checked-in JSON fixtures live in `tests/fixtures/` for test and CLI compatibility.
