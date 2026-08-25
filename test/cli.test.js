@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { test } from 'node:test';
 
 function runCli(args) {
@@ -31,6 +34,20 @@ test('cli smokes a checked-in fixture file', () => {
   assert.equal(payload.fixture, 'interruption_timing');
   assert.equal(payload.speechStarted, true);
   assert.equal(payload.passed, true);
+});
+
+test('cli reports the fixture file and invalid sample chronology', (context) => {
+  const directory = mkdtempSync(join(tmpdir(), 'bargekit-cli-'));
+  context.after(() => rmSync(directory, { recursive: true, force: true }));
+  const fixturePath = join(directory, 'reversed.json');
+  writeFileSync(fixturePath, JSON.stringify({
+    name: 'reversed',
+    samples: [{ timestamp: 20, level: 0.2 }, { timestamp: 0, level: 0.3 }]
+  }));
+
+  const result = runCli(['smoke', '--fixture', fixturePath, '--json']);
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /reversed\.json: sample 1 timestamp 0 must be greater than sample 0 timestamp 20/);
 });
 
 test('cli smokes a built-in fixture by name for installed users', () => {
