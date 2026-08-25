@@ -30,6 +30,12 @@ export function normalizeFixtureDocument(document, fileLabel = 'fixture') {
   }
 
   document.samples.forEach((sample, index) => assertSample(sample, index, fileLabel));
+  document.samples.slice(1).forEach((sample, offset) => {
+    const previous = document.samples[offset];
+    if (sample.timestamp <= previous.timestamp) {
+      throw new Error(`${fileLabel}: sample ${offset + 1} timestamp ${sample.timestamp} must be greater than sample ${offset} timestamp ${previous.timestamp}`);
+    }
+  });
 
   const totalMs = Number.isFinite(document.totalMs)
     ? document.totalMs
@@ -38,6 +44,21 @@ export function normalizeFixtureDocument(document, fileLabel = 'fixture') {
   const frameMs = Number.isFinite(document.frameMs)
     ? document.frameMs
     : inferFrameMs(document.samples);
+
+  if (document.samples.length > 1 && frameMs <= 0) {
+    throw new Error(`${fileLabel}: frameMs must be greater than 0 for multi-sample fixtures`);
+  }
+  if (totalMs < 0) {
+    throw new Error(`${fileLabel}: totalMs must be nonnegative`);
+  }
+  const finalIndex = document.samples.length - 1;
+  const finalTimestamp = document.samples[finalIndex].timestamp;
+  if (totalMs < finalTimestamp) {
+    throw new Error(`${fileLabel}: totalMs ${totalMs} precedes final sample ${finalIndex} timestamp ${finalTimestamp}`);
+  }
+  if (Number.isFinite(document.baseline) && (document.baseline < 0 || document.baseline > 1)) {
+    throw new Error(`${fileLabel}: baseline must be between 0 and 1`);
+  }
 
   return {
     name: document.name,
