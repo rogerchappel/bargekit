@@ -121,7 +121,27 @@ test('wake-hook mode requires wake signal before speech can open gate', () => {
   assert.equal(starts.length, 1);
 });
 
-test('barge-in requests fire while agent output is active', () => {
+test('transient speech does not request barge-in and restores agent output state', () => {
+  const engine = createBargeKit({ mode: 'vad', minSpeechMs: 120, debounceMs: 80 });
+  const barges = collect(engine, 'bargekit.barge_in.requested');
+  const ducks = collect(engine, 'bargekit.output.duck_requested');
+  const cancels = collect(engine, 'bargekit.output.cancel_requested');
+
+  engine.start(0);
+  engine.setAgentSpeaking(true, 1, { token: 'agent-turn-1' });
+  engine.ingestLevel({ timestamp: 2, level: 0.9 });
+
+  assert.equal(engine.getSnapshot().state, 'barge_pending');
+  assert.deepEqual([barges.length, ducks.length, cancels.length], [0, 0, 0]);
+
+  engine.ingestLevel({ timestamp: 3, level: 0 });
+
+  assert.deepEqual([barges.length, ducks.length, cancels.length], [0, 0, 0]);
+  assert.equal(engine.getSnapshot().state, 'agent_speaking');
+  assert.equal(engine.getSnapshot().candidateSpeech, null);
+});
+
+test('sustained speech requests barge-in once while agent output is active', () => {
   const engine = createBargeKit({ mode: 'vad', minSpeechMs: 80, debounceMs: 40 });
   const barges = collect(engine, 'bargekit.barge_in.requested');
   const ducks = collect(engine, 'bargekit.output.duck_requested');
@@ -135,6 +155,29 @@ test('barge-in requests fire while agent output is active', () => {
   assert.equal(barges.length, 1);
   assert.equal(ducks.length, 1);
   assert.equal(cancels.length, 1);
+  assert.equal(engine.getSnapshot().state, 'interrupted');
+});
+
+test('barge-in output controls honor disabled duck and cancel policy', () => {
+  const engine = createBargeKit({
+    mode: 'vad',
+    minSpeechMs: 80,
+    debounceMs: 40,
+    bargeIn: { duckOutput: false, cancelOutput: false }
+  });
+  const barges = collect(engine, 'bargekit.barge_in.requested');
+  const ducks = collect(engine, 'bargekit.output.duck_requested');
+  const cancels = collect(engine, 'bargekit.output.cancel_requested');
+
+  engine.start(0);
+  engine.setAgentSpeaking(true, 0);
+  engine.ingestLevel({ timestamp: 20, level: 0.8 });
+  engine.ingestLevel({ timestamp: 100, level: 0.8 });
+  engine.ingestLevel({ timestamp: 140, level: 0.8 });
+
+  assert.equal(barges.length, 1);
+  assert.equal(ducks.length, 0);
+  assert.equal(cancels.length, 0);
   assert.equal(engine.getSnapshot().state, 'interrupted');
 });
 
