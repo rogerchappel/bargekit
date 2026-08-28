@@ -120,11 +120,12 @@ Required fields: `mode`, `speechThreshold`, `noiseFloorThreshold`, `minSpeechMs`
 ### Agent output and barge-in
 
 - `armed` + `agent.output.start` -> `agent_speaking`
-- `agent_speaking` + qualifying user speech when barge-in enabled -> `barge_pending`
-- `barge_pending` emits `bargekit.barge_in.requested`
-- if `duckOutput` -> emit `bargekit.output.duck_requested`
-- if `cancelOutput` -> emit `bargekit.output.cancel_requested`
-- `barge_pending` + sustained speech -> `interrupted`
+- `agent_speaking` + an above-threshold sample when barge-in is enabled -> `barge_pending`
+- `barge_pending` + a drop below `speechThreshold` before `max(minSpeechMs, debounceMs)` -> `agent_speaking`, with no barge-in or output-control event
+- `barge_pending` + speech sustained for `max(minSpeechMs, debounceMs)` emits exactly one `bargekit.barge_in.requested`
+- if `duckOutput` -> also emit `bargekit.output.duck_requested`
+- if `cancelOutput` -> also emit `bargekit.output.cancel_requested`
+- after those configured events, qualified sustained speech -> `interrupted`
 - `interrupted` may proceed to `user_speaking` once output ends or host policy releases the turn
 
 ### Half-duplex hold
@@ -148,9 +149,9 @@ Required fields: `mode`, `speechThreshold`, `noiseFloorThreshold`, `minSpeechMs`
 | `bargekit.state.changed` | Any state transition occurs. |
 | `bargekit.user_speech.started` | User speech segment starts. |
 | `bargekit.user_speech.ended` | User speech segment ends. |
-| `bargekit.barge_in.requested` | Barge-in threshold is satisfied while agent audio is active. |
-| `bargekit.output.duck_requested` | Output should duck for interruption. |
-| `bargekit.output.cancel_requested` | Output should stop for interruption. |
+| `bargekit.barge_in.requested` | Speech has lasted `max(minSpeechMs, debounceMs)` while agent audio is active. |
+| `bargekit.output.duck_requested` | The qualifying barge-in requests reduced output volume when `duckOutput` is enabled. |
+| `bargekit.output.cancel_requested` | The qualifying barge-in requests active-output cancellation when `cancelOutput` is enabled. |
 | `bargekit.input.muted` | Input is muted by host/policy. |
 | `bargekit.input.noise_gated` | Input is suppressed as noise/echo. |
 | `bargekit.input.duplex_hold` | Half-duplex policy is holding microphone activity during agent output. |
