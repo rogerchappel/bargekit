@@ -1,4 +1,4 @@
-import { EVENTS, MODES, STATES, canRequestBargeIn, mergeConfig } from './contracts.js';
+import { EVENTS, MODES, STATES, mergeConfig } from './contracts.js';
 
 function assertKnownMode(mode) {
   if (!MODES.includes(mode)) {
@@ -296,9 +296,7 @@ export class BargeKitEngine {
       return this.getSnapshot();
     }
 
-    if (!this.agentOutputActive) {
-      this.#setState('listening', timestamp, 'mic.level');
-    }
+    this.#setState(this.agentOutputActive ? 'agent_speaking' : 'listening', timestamp, 'mic.level');
 
     return this.getSnapshot();
   }
@@ -317,35 +315,37 @@ export class BargeKitEngine {
       this.candidateSpeech.peakLevel = Math.max(this.candidateSpeech.peakLevel, sample.level);
     }
 
-    if (this.agentOutputActive && canRequestBargeIn(this.config, this.state) && this.config.bargeIn.whileAgentSpeaking) {
-      this.emitter.emit('bargekit.barge_in.requested', {
-        type: 'bargekit.barge_in.requested',
-        timestamp,
-        level: sample.level,
-        policy: structuredClone(this.config.bargeIn)
-      });
-
-      if (this.config.bargeIn.duckOutput) {
-        this.emitter.emit('bargekit.output.duck_requested', {
-          type: 'bargekit.output.duck_requested',
-          timestamp,
-          level: sample.level
-        });
-      }
-
-      if (this.config.bargeIn.cancelOutput) {
-        this.emitter.emit('bargekit.output.cancel_requested', {
-          type: 'bargekit.output.cancel_requested',
-          timestamp,
-          level: sample.level
-        });
-      }
-
-      this.#setState('barge_pending', timestamp, 'vad.speech.start');
-    }
-
     const speechDuration = timestamp - this.candidateSpeech.startedAt;
     if (!this.activeSpeech && speechDuration >= requiredWindow) {
+      if (
+        this.agentOutputActive &&
+        this.config.bargeIn.enabled &&
+        this.config.bargeIn.whileAgentSpeaking
+      ) {
+        this.emitter.emit('bargekit.barge_in.requested', {
+          type: 'bargekit.barge_in.requested',
+          timestamp,
+          level: sample.level,
+          policy: structuredClone(this.config.bargeIn)
+        });
+
+        if (this.config.bargeIn.duckOutput) {
+          this.emitter.emit('bargekit.output.duck_requested', {
+            type: 'bargekit.output.duck_requested',
+            timestamp,
+            level: sample.level
+          });
+        }
+
+        if (this.config.bargeIn.cancelOutput) {
+          this.emitter.emit('bargekit.output.cancel_requested', {
+            type: 'bargekit.output.cancel_requested',
+            timestamp,
+            level: sample.level
+          });
+        }
+      }
+
       this.activeSpeech = {
         startedAt: this.candidateSpeech.startedAt,
         detectedAt: timestamp,
