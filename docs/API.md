@@ -25,6 +25,11 @@ Key behaviours:
 - `half_duplex` holds input while agent output is active.
 - mute always wins over speech detection.
 
+Use `engine.updateConfig(patch)` to change runtime policy. The patch is
+incremental: omitted top-level values stay effective, and omitted siblings
+inside `bargeIn` or `halfDuplex` retain their current values rather than being
+reset to defaults.
+
 ## Fixtures
 
 ```js

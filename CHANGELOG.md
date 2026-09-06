@@ -7,6 +7,8 @@ format and uses semantic versioning when versioned releases are published.
 
 ## [Unreleased]
 
+- Preserve effective nested `bargeIn` and `halfDuplex` policy siblings during
+  partial runtime configuration updates.
 - Package smoke verification now checks the CLI bin target, documentation,
   safety notes, package metadata, and npm files allowlist before the dry-run
   pack.
