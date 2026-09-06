@@ -87,6 +87,11 @@ BargeKit is the local-first turn-taking layer for voice agents. It decides when 
 
 Required fields: `mode`, `speechThreshold`, `noiseFloorThreshold`, `minSpeechMs`, `silenceMs`, `debounceMs`, `cooldownMs`, `bargeIn.enabled`.
 
+`config.update` applies an incremental patch to the effective configuration.
+For the nested `bargeIn` and `halfDuplex` policies, supplied keys change and
+omitted sibling keys retain their current values. Defaults are applied when
+the engine is created, not reapplied over omitted siblings during an update.
+
 ## Transition Rules
 
 ### Session lifecycle

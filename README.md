@@ -82,6 +82,10 @@ barge.on('bargekit.barge_in.requested', () => {
   console.log('interrupt the agent now');
 });
 
+// Runtime updates are patches. Nested policy keys not supplied here keep
+// their currently effective values.
+barge.updateConfig({ bargeIn: { duckOutput: false } });
+
 barge.start();
 barge.setAgentSpeaking(true);
 barge.ingestLevel({ timestamp: Date.now(), level: 0.81 });
