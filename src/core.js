@@ -134,7 +134,18 @@ export class BargeKitEngine {
   }
 
   updateConfig(overrides = {}, timestamp = Date.now()) {
-    this.config = mergeConfig({ ...this.config, ...overrides });
+    this.config = mergeConfig({
+      ...this.config,
+      ...overrides,
+      halfDuplex: {
+        ...this.config.halfDuplex,
+        ...(overrides.halfDuplex ?? {})
+      },
+      bargeIn: {
+        ...this.config.bargeIn,
+        ...(overrides.bargeIn ?? {})
+      }
+    });
     assertKnownMode(this.config.mode);
     this.emitter.emit(EVENTS[2], {
       type: EVENTS[2],
