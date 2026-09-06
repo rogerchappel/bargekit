@@ -181,6 +181,44 @@ test('barge-in output controls honor disabled duck and cancel policy', () => {
   assert.equal(engine.getSnapshot().state, 'interrupted');
 });
 
+test('runtime config updates preserve effective nested policy siblings', () => {
+  const engine = createBargeKit({
+    mode: 'vad',
+    minSpeechMs: 80,
+    debounceMs: 40,
+    halfDuplex: { preventWhileAgentSpeaking: false },
+    bargeIn: {
+      enabled: false,
+      whileAgentSpeaking: false,
+      cancelOutput: false,
+      duckOutput: true
+    }
+  });
+  const barges = collect(engine, 'bargekit.barge_in.requested');
+  const cancels = collect(engine, 'bargekit.output.cancel_requested');
+
+  engine.updateConfig({ bargeIn: { duckOutput: false } }, 1);
+  engine.updateConfig({ halfDuplex: {} }, 2);
+
+  assert.deepEqual(engine.getSnapshot().config.bargeIn, {
+    enabled: false,
+    whileAgentSpeaking: false,
+    cancelOutput: false,
+    duckOutput: false
+  });
+  assert.deepEqual(engine.getSnapshot().config.halfDuplex, {
+    preventWhileAgentSpeaking: false
+  });
+
+  engine.start(10);
+  engine.setAgentSpeaking(true, 20);
+  engine.ingestLevel({ timestamp: 30, level: 0.8 });
+  engine.ingestLevel({ timestamp: 110, level: 0.8 });
+
+  assert.equal(barges.length, 0);
+  assert.equal(cancels.length, 0);
+});
+
 test('muted input suppresses speech and emits muted state', () => {
   const engine = createBargeKit();
   const mutedEvents = collect(engine, 'bargekit.input.muted');
